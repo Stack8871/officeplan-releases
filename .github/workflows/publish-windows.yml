@@ -22,8 +22,10 @@ jobs:
     steps:
       - name: Validate source tag
         shell: pwsh
+        env:
+          SOURCE_TAG: ${{ inputs.source_tag }}
         run: |
-          if ('${{ inputs.source_tag }}' -notmatch '^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$') {
+          if ($env:SOURCE_TAG -notmatch '^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$') {
             throw 'source_tag must be a version tag such as v0.2.0-rc.1'
           }
 
