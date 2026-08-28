@@ -1,0 +1,86 @@
+name: Publish OfficePlan for Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: Signed tag in Stack8871/officePlanFrontend, for example v0.2.0-rc.1
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: officeplan-windows-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - name: Validate source tag
+        shell: pwsh
+        run: |
+          if ('${{ inputs.source_tag }}' -notmatch '^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$') {
+            throw 'source_tag must be a version tag such as v0.2.0-rc.1'
+          }
+
+      - name: Check out private OfficePlan source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Stack8871/officePlanFrontend
+          ref: ${{ inputs.source_tag }}
+          path: source
+          ssh-key: ${{ secrets.OFFICEPLAN_FRONTEND_DEPLOY_KEY }}
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.18.0
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+        with:
+          toolchain: 1.98.0
+          targets: x86_64-pc-windows-msvc
+
+      - name: Install JavaScript dependencies
+        working-directory: source
+        run: npm ci
+
+      - name: Verify synchronized version
+        working-directory: source
+        env:
+          OFFICEPLAN_RELEASE_TAG: ${{ inputs.source_tag }}
+        run: npm run release:verify-version
+
+      - name: Verify frontend
+        working-directory: source
+        run: npm run verify
+
+      - name: Verify Rust workspace
+        working-directory: source/src-tauri
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --workspace --all-targets --locked -- -D warnings
+          cargo test --workspace --locked
+
+      - name: Build, sign, and publish Windows release
+        uses: tauri-apps/tauri-action@fce9c6108b31ea247710505d3aaaa893ee6768d4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: source
+          tagName: ${{ inputs.source_tag }}
+          releaseName: OfficePlan ${{ inputs.source_tag }}
+          releaseBody: Internal beta for controlled OfficePlan installations. Backup/restore and transactional email remain separate release gates.
+          releaseDraft: false
+          prerelease: false
+          args: --target x86_64-pc-windows-msvc --bundles nsis
