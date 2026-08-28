@@ -105,7 +105,7 @@ jobs:
             Sort-Object Name |
             ForEach-Object {
               $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLowerInvariant()
-              "$hash *release-assets/$($_.Name)"
+              "$hash *$($_.Name)"
             }
           [IO.File]::WriteAllLines($checksumPath, $lines, [Text.UTF8Encoding]::new($false))
           gh release upload $env:SOURCE_TAG $checksumPath --repo $env:GITHUB_REPOSITORY
