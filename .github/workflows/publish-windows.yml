@@ -10,6 +10,9 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 concurrency:
   group: officeplan-windows-release
@@ -82,7 +85,33 @@ jobs:
           projectPath: source
           tagName: ${{ inputs.source_tag }}
           releaseName: OfficePlan ${{ inputs.source_tag }}
-          releaseBody: Internal beta for controlled OfficePlan installations. Backup/restore and transactional email remain separate release gates.
+          releaseBody: Internal beta built from private source tag ${{ inputs.source_tag }}. Backup/restore, transactional email, and Windows Authenticode remain separate release gates.
           releaseDraft: false
           prerelease: false
           args: --target x86_64-pc-windows-msvc --bundles nsis
+
+      - name: Generate and publish release checksums
+        id: checksums
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_TAG: ${{ inputs.source_tag }}
+        run: |
+          $assetDirectory = Join-Path $env:GITHUB_WORKSPACE 'release-assets'
+          New-Item -ItemType Directory -Path $assetDirectory | Out-Null
+          gh release download $env:SOURCE_TAG --repo $env:GITHUB_REPOSITORY --dir $assetDirectory
+          $checksumPath = Join-Path $env:GITHUB_WORKSPACE 'SHA256SUMS.txt'
+          $lines = Get-ChildItem -LiteralPath $assetDirectory -File |
+            Sort-Object Name |
+            ForEach-Object {
+              $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLowerInvariant()
+              "$hash *release-assets/$($_.Name)"
+            }
+          [IO.File]::WriteAllLines($checksumPath, $lines, [Text.UTF8Encoding]::new($false))
+          gh release upload $env:SOURCE_TAG $checksumPath --repo $env:GITHUB_REPOSITORY
+          "path=$checksumPath" >> $env:GITHUB_OUTPUT
+
+      - name: Attest published release assets
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        with:
+          subject-checksums: ${{ steps.checksums.outputs.path }}
