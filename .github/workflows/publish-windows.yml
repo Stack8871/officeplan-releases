@@ -32,6 +32,12 @@ jobs:
             throw 'source_tag must be a version tag such as v0.2.0-rc.1'
           }
 
+      - name: Check out public release channel
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: channel
+          persist-credentials: true
+
       - name: Check out private OfficePlan source
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -108,6 +114,44 @@ jobs:
           prerelease: ${{ contains(inputs.source_tag, '-') }}
           updaterJsonPreferNsis: true
           args: --target x86_64-pc-windows-msvc --bundles nsis
+
+      - name: Publish updater channel manifest
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_TAG: ${{ inputs.source_tag }}
+        run: |
+          $version = $env:SOURCE_TAG.TrimStart('v')
+          $channelName = if ($env:SOURCE_TAG.Contains('-')) { 'beta' } else { 'stable' }
+          $downloadDirectory = Join-Path $env:RUNNER_TEMP 'officeplan-updater-channel'
+          New-Item -ItemType Directory -Path $downloadDirectory -Force | Out-Null
+          gh release download $env:SOURCE_TAG --repo $env:GITHUB_REPOSITORY --pattern latest.json --dir $downloadDirectory --clobber
+
+          $downloadedManifest = Join-Path $downloadDirectory 'latest.json'
+          $manifest = Get-Content -LiteralPath $downloadedManifest -Raw | ConvertFrom-Json
+          if ($manifest.version -ne $version) {
+            throw "Updater manifest version $($manifest.version) does not match $version"
+          }
+          if ($null -eq $manifest.platforms -or @($manifest.platforms.PSObject.Properties).Count -eq 0) {
+            throw 'Updater manifest contains no platform artifacts'
+          }
+
+          git -C channel pull --ff-only origin main
+          $channelDirectory = Join-Path $env:GITHUB_WORKSPACE "channel/channels/$channelName"
+          New-Item -ItemType Directory -Path $channelDirectory -Force | Out-Null
+          Copy-Item -LiteralPath $downloadedManifest -Destination (Join-Path $channelDirectory 'latest.json') -Force
+          git -C channel add -- "channels/$channelName/latest.json"
+          git -C channel diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Output "Updater channel $channelName already points to $version"
+          } elseif ($LASTEXITCODE -eq 1) {
+            git -C channel config user.name 'github-actions[bot]'
+            git -C channel config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git -C channel commit -m "release: update $channelName channel to $env:SOURCE_TAG"
+            git -C channel push origin HEAD:main
+          } else {
+            throw 'Unable to compare updater channel manifest'
+          }
 
       - name: Generate and publish release checksums
         id: checksums
