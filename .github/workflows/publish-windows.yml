@@ -113,6 +113,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           projectPath: source
+          tauriScript: npx --no-install tauri
           tagName: ${{ inputs.source_tag }}
           releaseName: OfficePlan ${{ inputs.source_tag }}
           releaseBody: Internal beta built from private source tag ${{ inputs.source_tag }}. Backup/restore, transactional email, and Windows Authenticode remain separate release gates.
