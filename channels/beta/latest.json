@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0-rc.4",
+  "notes": "Internal beta built from private source tag v0.2.0-rc.4. Backup/restore, transactional email, and Windows Authenticode remain separate release gates.",
+  "pub_date": "2026-08-30T10:51:54.108Z",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRLzRLQlhZYXlzdUM0Z2tmMHBuWjB2SGhGaEZVMXJIT0xranlET0t0d2h5eEd3ajJVTDB5dzlLMjJVdEJxbWZzOHQvcEtOSFdpUHpwNDd2eXA1TU96aENHZnNmWGh1dVFBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MDg3MTExCWZpbGU6T2ZmaWNlUGxhbl8wLjIuMC1yYy40X3g2NC1zZXR1cC5leGUKbUlJelhOcjNFVk9mejRaVmxBY2grWUVIS0V1QkVwZzZGQ1MzUG9iVHNIWlc1VDJkcEZKWUJwcnhVc2pXRnp3cElDdXN3Yk01TnNGbEZwT0dPWFYyQXc9PQo=",
+      "url": "https://github.com/Stack8871/officeplan-releases/releases/download/v0.2.0-rc.4/OfficePlan_0.2.0-rc.4_x64-setup.exe"
+    },
+    "windows-x86_64-nsis": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRLzRLQlhZYXlzdUM0Z2tmMHBuWjB2SGhGaEZVMXJIT0xranlET0t0d2h5eEd3ajJVTDB5dzlLMjJVdEJxbWZzOHQvcEtOSFdpUHpwNDd2eXA1TU96aENHZnNmWGh1dVFBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MDg3MTExCWZpbGU6T2ZmaWNlUGxhbl8wLjIuMC1yYy40X3g2NC1zZXR1cC5leGUKbUlJelhOcjNFVk9mejRaVmxBY2grWUVIS0V1QkVwZzZGQ1MzUG9iVHNIWlc1VDJkcEZKWUJwcnhVc2pXRnp3cElDdXN3Yk01TnNGbEZwT0dPWFYyQXc9PQo=",
+      "url": "https://github.com/Stack8871/officeplan-releases/releases/download/v0.2.0-rc.4/OfficePlan_0.2.0-rc.4_x64-setup.exe"
+    }
+  }
+}
