@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       source_tag:
-        description: Signed tag in Stack8871/officePlanFrontend, for example v0.2.0-rc.1
+        description: Immutable annotated tag in Stack8871/officePlanFrontend, for example v0.2.0-rc.1
         required: true
         type: string
 
