@@ -40,6 +40,24 @@ jobs:
           path: source
           ssh-key: ${{ secrets.OFFICEPLAN_FRONTEND_DEPLOY_KEY }}
           persist-credentials: false
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Verify immutable source tag
+        shell: pwsh
+        working-directory: source
+        env:
+          SOURCE_TAG: ${{ inputs.source_tag }}
+        run: |
+          $headCommit = (git rev-parse HEAD).Trim()
+          $tagCommit = (git rev-parse "$env:SOURCE_TAG^{commit}").Trim()
+          if ($headCommit -ne $tagCommit) {
+            throw "Source tag $env:SOURCE_TAG does not resolve to checked out commit $headCommit"
+          }
+          $matchingTags = @(git tag --points-at HEAD)
+          if ($matchingTags -notcontains $env:SOURCE_TAG) {
+            throw "Checked out commit is not tagged with $env:SOURCE_TAG"
+          }
 
       - name: Install Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -87,7 +105,8 @@ jobs:
           releaseName: OfficePlan ${{ inputs.source_tag }}
           releaseBody: Internal beta built from private source tag ${{ inputs.source_tag }}. Backup/restore, transactional email, and Windows Authenticode remain separate release gates.
           releaseDraft: false
-          prerelease: false
+          prerelease: ${{ contains(inputs.source_tag, '-') }}
+          updaterJsonPreferNsis: true
           args: --target x86_64-pc-windows-msvc --bundles nsis
 
       - name: Generate and publish release checksums
