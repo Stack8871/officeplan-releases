@@ -1,15 +1,15 @@
 {
-  "version": "0.2.0-rc.11",
-  "notes": "Internal beta built from private source tag v0.2.0-rc.11. Backup/restore, transactional email, and Windows Authenticode remain separate release gates.",
-  "pub_date": "2026-09-02T12:25:28.227Z",
+  "version": "0.2.0-rc.12",
+  "notes": "Internal beta built from private source tag v0.2.0-rc.12. Backup/restore, transactional email, and Windows Authenticode remain separate release gates.",
+  "pub_date": "2026-09-02T15:31:59.802Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRLzRLQlhZYXlzdUJ5Ym44RmtMQlZjdU1DdWtzNjEyTFdhdkI0SXhSVERmNGlQWndMVGNxRVhzSlJRZ2hHakZUMTJwUElEWmo0azFYM3kzUW56NFFsbjZoeC9JbFRXdUFFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MzUxOTIzCWZpbGU6T2ZmaWNlUGxhbl8wLjIuMC1yYy4xMV94NjQtc2V0dXAuZXhlCis4NDlMTFU2UUpYZFBGUnlKOGRDQjRKUnpaN3VmclBnVkRnaWRTTmhOSkZKOXk0VUg0VWZyQ1VSNUl5UWs2eXhkcGtTT0FJRTEydGNjTWRrNmNwUURRPT0K",
-      "url": "https://github.com/Stack8871/officeplan-releases/releases/download/v0.2.0-rc.11/OfficePlan_0.2.0-rc.11_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRLzRLQlhZYXlzdUJTUVFPVStuL1NKV1V6ZmtQMHdUQkgrNEE4TWFoYXc4MmRiQVpQRW5IM3NSOUhVWGViZHpVSHNOVkVZRU1vSzNJeWYvbkk5Z2JIWllWelJaekcyRmdBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MzYzMTE0CWZpbGU6T2ZmaWNlUGxhbl8wLjIuMC1yYy4xMl94NjQtc2V0dXAuZXhlCkdUUC9KdW80ckFQMG15VHBQTEs0OGdKSzI3VHMvYUM0YTNWRHRrM3V3L1IvZ3VUcDVVeXN5ZHpETEFpaUlITkpUSTBUbXhXN0VxS3BrVnpsZDgrbEJRPT0K",
+      "url": "https://github.com/Stack8871/officeplan-releases/releases/download/v0.2.0-rc.12/OfficePlan_0.2.0-rc.12_x64-setup.exe"
     },
     "windows-x86_64-nsis": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRLzRLQlhZYXlzdUJ5Ym44RmtMQlZjdU1DdWtzNjEyTFdhdkI0SXhSVERmNGlQWndMVGNxRVhzSlJRZ2hHakZUMTJwUElEWmo0azFYM3kzUW56NFFsbjZoeC9JbFRXdUFFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MzUxOTIzCWZpbGU6T2ZmaWNlUGxhbl8wLjIuMC1yYy4xMV94NjQtc2V0dXAuZXhlCis4NDlMTFU2UUpYZFBGUnlKOGRDQjRKUnpaN3VmclBnVkRnaWRTTmhOSkZKOXk0VUg0VWZyQ1VSNUl5UWs2eXhkcGtTT0FJRTEydGNjTWRrNmNwUURRPT0K",
-      "url": "https://github.com/Stack8871/officeplan-releases/releases/download/v0.2.0-rc.11/OfficePlan_0.2.0-rc.11_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRLzRLQlhZYXlzdUJTUVFPVStuL1NKV1V6ZmtQMHdUQkgrNEE4TWFoYXc4MmRiQVpQRW5IM3NSOUhVWGViZHpVSHNOVkVZRU1vSzNJeWYvbkk5Z2JIWllWelJaekcyRmdBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MzYzMTE0CWZpbGU6T2ZmaWNlUGxhbl8wLjIuMC1yYy4xMl94NjQtc2V0dXAuZXhlCkdUUC9KdW80ckFQMG15VHBQTEs0OGdKSzI3VHMvYUM0YTNWRHRrM3V3L1IvZ3VUcDVVeXN5ZHpETEFpaUlITkpUSTBUbXhXN0VxS3BrVnpsZDgrbEJRPT0K",
+      "url": "https://github.com/Stack8871/officeplan-releases/releases/download/v0.2.0-rc.12/OfficePlan_0.2.0-rc.12_x64-setup.exe"
     }
   }
 }
